@@ -34,8 +34,12 @@ public class Component {
         // TO DO
     }
 
+    @Override
     public String toString() {
-        return name;
+        return "Name: '" + this.name +
+                "', Installed: '" + this.isInstalled +
+                "', Depends on: '" + this.dependencySet.toString() +
+                "', Supports: '" + this.supportSet.toString() + "'";
     }
 
 }
