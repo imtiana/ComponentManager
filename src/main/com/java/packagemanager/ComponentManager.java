@@ -6,14 +6,27 @@ import java.util.*;
  * Created by Tiana Im on 2015-12-02.
  */
 public class ComponentManager {
+    private Map<String, Component> allComponents;
     private Set<String> installedComp;
     private Map<String, Set<String>> dependencyMap;
     private Map<String, Set<String>> supportMap;
 
+
     public ComponentManager() {
+        allComponents = new HashMap<>();
         installedComp = new HashSet<>();
         dependencyMap = new HashMap<>();
         supportMap = new HashMap<>();
+    }
+
+    public void createComponent(String cname) throws ComponentExceptions.ComponentAlreadyExistsException {
+        if (allComponents.containsKey(cname)) {
+            throw new ComponentExceptions.ComponentAlreadyExistsException("Component " + cname + " already exists.");
+        }
+        else {
+            Component newComponent = new Component(cname);
+            allComponents.put(cname, newComponent);
+        }
     }
 
     public void makeDepenency (String comp, ArrayList<String> depComps) {
@@ -21,7 +34,7 @@ public class ComponentManager {
         populateSupportHelper(comp, depComps);
     }
 
-    private void populateDependencyHelper (String comp, ArrayList<String> depComps) {
+    private void populateDependencyHelper(String comp, ArrayList<String> depComps) {
         if (!dependencyMap.containsKey(comp)) {
             Set<String> dep = new HashSet<>();
             for (String d : depComps) {
@@ -46,7 +59,7 @@ public class ComponentManager {
         }
     }
 
-    private void populateSupportHelper (String comp, ArrayList<String> depComps) {
+    private void populateSupportHelper(String comp, ArrayList<String> depComps) {
         for (String d : depComps) {
             if (!supportMap.containsKey(d)) {
                 Set<String> supports = new HashSet<>();
@@ -59,7 +72,7 @@ public class ComponentManager {
         }
     }
 
-    public void installComponent (String comp) {
+    public void installComponent(String comp) {
         System.out.println("INSTALL " + comp);
 
         if (installedComp.contains(comp)) {
@@ -77,7 +90,7 @@ public class ComponentManager {
         }
     }
 
-    private void installComponentHelper (String c) {
+    private void installComponentHelper(String c) {
         Set<String> depencencies = dependencyMap.get(c);
 
         if (depencencies.size() == 0) {
@@ -93,7 +106,7 @@ public class ComponentManager {
         }
     }
 
-    public void removeComponent (String comp) throws ComponentExceptions.NonexistentComponentNameException {
+    public void removeComponent(String comp) throws ComponentExceptions.NonexistentComponentNameException {
         System.out.println("REMOVE " + comp);
 
         if (!dependencyMap.containsKey(comp)) {
@@ -108,7 +121,7 @@ public class ComponentManager {
         removeComponentHelper(comp);
     }
 
-    private void removeComponentHelper (String c) {
+    private void removeComponentHelper(String c) {
         Set<String> supported = supportMap.get(c);
 
         if (supported.size() == 0) {
@@ -126,12 +139,12 @@ public class ComponentManager {
         }
     }
 
-    private void installSingleComponent (String c) {
+    private void installSingleComponent(String c) {
         installedComp.add(c);
         System.out.println("   Installing " + c);
     }
 
-    private void removeSingleComponent (String c) {
+    private void removeSingleComponent(String c) {
         installedComp.remove(c);
         dependencyMap.remove(c);
         supportMap.remove(c);
