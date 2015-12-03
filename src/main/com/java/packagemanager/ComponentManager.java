@@ -29,6 +29,7 @@ public class ComponentManager {
         }
     }
 
+    // TO DO: need to edit this to work with createComponent
     public void makeDepenency (String comp, ArrayList<String> depComps) {
         populateDependencyHelper(comp, depComps);
         populateSupportHelper(comp, depComps);
