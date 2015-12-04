@@ -19,9 +19,13 @@ public class ComponentManager {
         supportMap = new HashMap<>();
     }
 
+    public static void main(String[] args) {
+        // process input here?
+    }
+
     public void createComponent(String cname) throws ComponentExceptions.ComponentAlreadyExistsException {
         if (allComponents.containsKey(cname)) {
-            throw new ComponentExceptions.ComponentAlreadyExistsException("Component " + cname + " already exists.");
+            System.out.println("Component " + cname + " already exists.");
         }
         else {
             Component newComponent = new Component(cname);
